@@ -1,11 +1,9 @@
 # Production override for docker-compose
 # Usage: docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
 
-version: '3.8'
-
 services:
-  # Remove postgres service in production (use external database)
-  postgres: null
+  # Keep postgres for local production testing (use external database in real production)
+  # postgres: null
 
   api:
     build:
