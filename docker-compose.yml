@@ -48,6 +48,11 @@ services:
     restart: unless-stopped
     environment:
       NUXT_PUBLIC_API_BASE: ${NUXT_PUBLIC_API_BASE:-http://localhost:8080}
+      CHOKIDAR_USEPOLLING: "true"
+      CHOKIDAR_INTERVAL: "50"
+      VITE_HMR_PROTOCOL: "ws"
+      VITE_HMR_HOST: "localhost"
+      VITE_HMR_PORT: "3000"
     ports:
       - "${FRONTEND_PORT:-3000}:3000"
     volumes:
