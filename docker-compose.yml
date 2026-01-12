@@ -49,7 +49,7 @@ services:
     container_name: vehicle-search-frontend-dev
     restart: unless-stopped
     environment:
-      NUXT_PUBLIC_API_BASE: ${NUXT_PUBLIC_API_BASE:-http://api:8080}
+      NUXT_PUBLIC_API_BASE: ${NUXT_PUBLIC_API_BASE:-http://localhost:8080}
     ports:
       - "${FRONTEND_PORT:-3000}:3000"
     volumes:
