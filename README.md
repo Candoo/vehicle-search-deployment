@@ -6,8 +6,8 @@ This repository contains Docker Compose configurations for running the Vehicle S
 
 - `../vehicle-search` - Nuxt.js frontend application
 - `../vehicles-api` - Go backend API
-- `docker-compose.yml` - Development environment
-- `docker-compose.prod.yml` - Production environment override
+- `docker-compose.yml` - Development environment (with HMR and hot reload)
+- `docker-compose.prod.yml` - Production environment (standalone, do not merge with dev)
 
 ## Prerequisites
 
@@ -55,8 +55,10 @@ Once services are running:
 
 2. **Start production environment**:
    ```bash
-   docker-compose -f docker-compose.yml -f docker-compose.prod.yml --env-file .env.production up -d
+   docker-compose -f docker-compose.prod.yml --env-file .env.production up -d --build
    ```
+
+   **Important**: Use `docker-compose.prod.yml` alone. Do NOT merge it with `docker-compose.yml`.
 
 3. **Access the application**:
    - Open browser to http://localhost:3000 (or your configured frontend port)
@@ -105,28 +107,27 @@ Once services are running:
 # Development
 docker-compose up
 
-# Production
-docker-compose -f docker-compose.yml -f docker-compose.prod.yml --env-file .env.production up -d
+# Production (use standalone docker-compose.prod.yml - do NOT merge with docker-compose.yml)
+docker-compose -f docker-compose.prod.yml --env-file .env.production up -d --build
 
-# View logs for all services
+# Development logs
 docker-compose logs -f
+
+# Production logs
+docker-compose -f docker-compose.prod.yml logs -f
 
 # View logs for specific service
 docker-compose logs -f api
 docker-compose logs -f postgres
 
-# Stop all services
+# Stop all services (development)
 docker-compose down
 
-# Rebuild and restart
+# Stop all services (production)
+docker-compose -f docker-compose.prod.yml down
+
+# Rebuild and restart (development)
 docker-compose up --build
-```
-
-# Production logs
-docker-compose -f docker-compose.yml -f docker-compose.prod.yml logs -f
-
-# Check service status
-docker-compose ps
 ```
 
 ## Testing Connections
