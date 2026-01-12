@@ -55,8 +55,17 @@ Once services are running:
 
 2. **Start production environment**:
    ```bash
-   docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+   docker-compose -f docker-compose.yml -f docker-compose.prod.yml --env-file .env.production up -d
    ```
+
+3. **Access the application**:
+   - Open browser to http://localhost:3000 (or your configured frontend port)
+   - Check API at http://localhost:8080/swagger/index.html (or your configured API port)
+
+### Production Configuration Notes
+- Update `NUXT_PUBLIC_API_BASE` in `.env.production` to your production API URL (e.g., `https://api.yourdomain.com`)
+- For external database, update the DB_* variables in `.env.production`
+- The included PostgreSQL is for local testing; remove or disable it for production by setting `postgres: null` in `docker-compose.prod.yml`
 
 ## Environment Variables
 
@@ -65,10 +74,18 @@ Once services are running:
 - API accessible at `http://localhost:8080`
 - Frontend at `http://localhost:3000`
 
-### Production (.env.production.example)
-- Requires external PostgreSQL database
-- API and Frontend URLs need to be configured
-- SSL enabled for database connections
+### Production (.env.production)
+- Configurable database settings (local or external)
+- API and Frontend URLs configurable
+- SSL settings for database connections
+- Update `NUXT_PUBLIC_API_BASE` for production frontend API calls
+
+#### Key Environment Variables
+- `DB_HOST`: Database host (e.g., vehicle-db for local, or external host)
+- `DB_USER`, `DB_PASSWORD`, `DB_NAME`: Database credentials
+- `DB_SSLMODE`: SSL mode (disable for local, require for production)
+- `API_PORT`: API port (default 8080)
+- `NUXT_PUBLIC_API_BASE`: Frontend API base URL (e.g., http://localhost:8080 for local, https://api.yourdomain.com for production)
 
 ## Services
 
@@ -78,13 +95,19 @@ Once services are running:
 - **Frontend**: Nuxt.js with HMR via volume mounts
 
 ### Production
+- **PostgreSQL**: Local database for testing (can be disabled for external DB)
 - **API**: Optimized Go binary
 - **Frontend**: Built Nuxt.js application
-- **PostgreSQL**: External database (not included)
 
 ## Useful Commands
 
 ```bash
+# Development
+docker-compose up
+
+# Production
+docker-compose -f docker-compose.yml -f docker-compose.prod.yml --env-file .env.production up -d
+
 # View logs for all services
 docker-compose logs -f
 
@@ -97,6 +120,7 @@ docker-compose down
 
 # Rebuild and restart
 docker-compose up --build
+```
 
 # Production logs
 docker-compose -f docker-compose.yml -f docker-compose.prod.yml logs -f
