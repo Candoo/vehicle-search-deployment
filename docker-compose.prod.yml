@@ -34,6 +34,8 @@ services:
     build:
       context: ../vehicle-search
       dockerfile: Dockerfile
+      args:
+        NUXT_PUBLIC_API_BASE: ${NUXT_PUBLIC_API_BASE}
     container_name: vehicle-search-frontend
     restart: unless-stopped
     env_file:
